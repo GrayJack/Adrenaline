@@ -164,19 +164,19 @@
 #ifdef F_SystemCtrlForKernel_0052
 	IMPORT_FUNC  "SystemCtrlForKernel",0xF9584CAD,oe_malloc
 #endif
-#ifdef F_SystemCtrlForKernel_0053
+#ifdef F_SystemCtrlForKernel_0055
 	IMPORT_FUNC  "SystemCtrlForKernel",0x3EB35691,strcasecmp
 #endif
-#ifdef F_SystemCtrlForKernel_0054
+#ifdef F_SystemCtrlForKernel_0056
 	IMPORT_FUNC  "SystemCtrlForKernel",0x7BA27B01,strncasecmp
 #endif
-#ifdef F_SystemCtrlForKernel_0055
+#ifdef F_SystemCtrlForKernel_0057
 	IMPORT_FUNC  "SystemCtrlForKernel",0xD3D1A3B9,strncat
 #endif
-#ifdef F_SystemCtrlForKernel_0056
+#ifdef F_SystemCtrlForKernel_0058
 	IMPORT_FUNC  "SystemCtrlForKernel",0xEFB593C9,strncat_s
 #endif
-#ifdef F_SystemCtrlForKernel_0057
+#ifdef F_SystemCtrlForKernel_0059
 	IMPORT_FUNC  "SystemCtrlForKernel",0x5ABF13F5,strncpy_s
 #endif
 #ifdef F_SystemCtrlForKernel_0058
