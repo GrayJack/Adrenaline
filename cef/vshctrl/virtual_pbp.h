@@ -60,5 +60,6 @@ int vpbp_dclose(SceUID fd);
 int vpbp_reset(int cache);
 void vpbp_fixisopath(char *path);
 void vpbp_fixisomanualpath(char *path);
+void vpbp_fixisodocinfopath(char *path);
 
 #endif
