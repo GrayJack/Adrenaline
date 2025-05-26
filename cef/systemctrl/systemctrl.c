@@ -50,7 +50,12 @@ int sctrlHENIsDevhook() {
 }
 
 int sctrlHENGetVersion() {
-	return 0x00001000;
+	return ADRENALINE_VERSION;
+}
+
+// Same NID as `sctrlHENGetMinorVersion` on ARK-4
+int sctrlHENGetRevisionVersion() {
+	return ADRENALINE_VERSION_REV;
 }
 
 int sctrlSEGetVersion() {
@@ -173,7 +178,7 @@ int sctrlSEMountUmdFromFile(char *file, int noumd, int isofs) {
 	return 0;
 }
 
-int sctrlSEGetBootConfBootFileIndex() {
+int sctrlSEGetBootConfFileIndex() {
 	return rebootex_config.bootfileindex;
 }
 

@@ -16,6 +16,8 @@ enum BootModes
 	BOOT_MARCH33,
 	BOOT_NP9660,
 	BOOT_RECOVERY,
+	BOOT_VSHUMD,
+	BOOT_UPDATERUMD,
 };
 
 enum BootLoadFlags
@@ -152,6 +154,12 @@ unsigned int sctrlKernelRand(void);
 int sctrlKernelSetUserLevel(int level);
 
 
+/**
+ * Gets the HEN minor version
+ *
+ * @returns - The HEN minor version
+ */
+int sctrlHENGetRevisionVersion();
 
 /**
  * Finds a driver
@@ -175,6 +183,12 @@ PspIoDrv *sctrlHENFindDriver(char *drvname);
 */
 u32 sctrlHENFindFunction(const char* szMod, const char* szLib, u32 nid);
 #define FindProc sctrlHENFindFunction
+
+// Replace Import Function Stub
+int sctrlHENHookImportByNID(SceModule2 * pMod, char * library, unsigned int nid, void * func);
+
+// Replace Import Function Stub
+int sctrlHENHookImportByNID(SceModule2 * pMod, char * library, unsigned int nid, void * func);
 
 /**
  * Gets the HEN version
@@ -271,6 +285,8 @@ void sctrlHENSetSpeed(int cpu, int bus);
 STMOD_HANDLER sctrlHENSetStartModuleHandler(STMOD_HANDLER handler);
 
 
+
+int sctrlKernelQuerySystemCall(void *func_addr);
 
 /**
  * Flush/Cleans Instruction and Data Caches

@@ -116,3 +116,15 @@
 #ifdef F_SystemCtrlForUser_0036
 	IMPORT_FUNC  "SystemCtrlForUser",0x053172F8,sctrlRebootDevice
 #endif
+#ifdef F_SystemCtrlForUser_0037
+	IMPORT_FUNC  "SystemCtrlForUser",0x5328B431,sctrlHENGetRevisionVersion
+#endif
+#ifdef F_SystemCtrlForUser_0038
+	IMPORT_FUNC  "SystemCtrlForUser",0x70B92B45,sctrlSEGetBootConfFileIndex
+#endif
+#ifdef F_SystemCtrlForUser_0037
+	IMPORT_FUNC  "SystemCtrlForUser",0x5328B431,sctrlHENGetRevisionVersion
+#endif
+#ifdef F_SystemCtrlForUser_0038
+	IMPORT_FUNC  "SystemCtrlForUser",0x70B92B45,sctrlSEGetBootConfFileIndex
+#endif
