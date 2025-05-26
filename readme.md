@@ -38,12 +38,39 @@ ux0:app/PSPEMUCFW/sce_module/adrenaline_kernel.skprx
 Manuals for ISO games
 ---------------------
 Adrenaline now supports displaying manuals for ISO-format games:
-1. Obtain/create DOCUMENT.DAT for you game.
+
+**Option 1:**
+1. Obtain/create DOCUMENT.DAT for your game.
 2. Rename it to <your_iso_name>.DAT and place next to it.
 E.g.: if you have `ux0:/pspemu/ISO/MYGAME.iso` name your manual `ux0:/pspemu/ISO/MYGAME.DAT`
+3. (Optional) If your DOCUMENT.DAT requires a DOCINFO.EDAT, rename it <your_iso_name>.EDAT and place next to it.
+E.g.: if you have `ux0:/pspemu/ISO/MYGAME.iso` name your manual `ux0:/pspemu/ISO/MYGAME.EDAT`
+
+**Option 2:**
+1. Obtain/create DOCUMENT.DAT for your game.
+2. Place it in the folder of the GAME_ID of your game.
+E.g.: if your game ID is `ABCD01234` your manual should be put on `ux0:/pspemu/PSP/GAME/ABCD01234/DOCUMENT.DAT`
+3. (Optional) If your DOCUMENT.DAT requires a DOCINFO.EDAT, place it in the folder of the GAME_ID of your game.
+E.g.: if your game ID is `ABCD01234` your manual should be put on `ux0:/pspemu/PSP/GAME/ABCD01234/DOCINFO.EDAT`
+
+**Note:** If you choose the second option, remember to enable the CFW option `Hide corrupt icons` in the recovery menu, otherwise corrupt icons may show up (in the case the game does not contain update or DLC installed).
 
 Changelog
 ---------
+
+### Changelog v8.0.0
+- Update Inferno driver to v2.
+- Add support for JSO/ZSO/DAX ISO formats.
+- Add Scale2x filter.
+- Add Plugin Manager to XMB.
+  - Disabled by default. Enable on `Recovery Menu > Enable XMBControl`.
+- Add CFW Configuration to XMB.
+  - Disabled by default. Enable on `Recovery Menu > Enable XMBControl`.
+- Detect and ignore MacOS meta data files.
+  - prevent's from showing up as corrupted files in the XMB.
+- Detect and ignore ARK standalone folders.
+  - Requires `Hide corrupt icons` CFW option to be enabled.
+- Improved ISO manual support.
 
 ### Changelog v7.1.7
 - Fix autoboot.

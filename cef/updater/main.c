@@ -83,8 +83,18 @@ int main(void) {
 	printf("6.61 Adrenaline-%d.%d.%d Installer\n", ADRENALINE_VERSION_MAJOR, ADRENALINE_VERSION_MINOR, ADRENALINE_VERSION_MICRO);
 	printf("Changes:\n\n");
 
-	printf("- Fix autoboot.\n");
-	printf("- Support vita firmwares 3.71-3.74.\n");
+	printf("- Update Inferno driver to v2.\n");
+	printf("- Add support for JSO/ZSO/DAX ISO formats.\n");
+	printf("- Add Scale2x filter.\n");
+	printf("- Add Plugin Manager to XMB.\n");
+	printf("\t- Disabled by default. Enable on `Recovery Menu > Enable XMBControl`.\n");
+	printf("- Add CFW Configuration to XMB.\n");
+	printf("\t- Disabled by default. Enable on `Recovery Menu > Enable XMBControl`.\n");
+	printf("- Detect and ignore MacOS meta data files.\n");
+	printf("\t- prevent's from showing up as corrupted files in the XMB.\n");
+	printf("- Detect and ignore ARK standalone folders.\n");
+	printf("\t- Requires `Hide corrupt icons` CFW option to be enabled.\n");
+	printf("- Improved ISO manual support.\n");
 
 	printf("\n");
 
