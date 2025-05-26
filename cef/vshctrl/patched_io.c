@@ -815,58 +815,6 @@ int umdemuLoadExec(int apitype, char *file, struct SceKernelLoadExecVSHParam *pa
 }
 
 int umdLoadExec2(int apitype, char *file, struct SceKernelLoadExecVSHParam *param, int unk2) {
-	// #ifdef DEBUG
-	// printk("Executing %s(0x%04X, %s)\n", __func__, apitype, file);
-	// #endif
-
-	// //result
-	// int ret = 0;
-
-	// sctrlSESetDiscType(PSP_UMD_TYPE_GAME);
-
-	// if(psp_model == PSP_GO) {
-	// 	char devicename[20];
-	// 	apitype = PSP_INIT_APITYPE_UMDEMU_MS1;
-
-	// 	extern char mounted_iso[64];
-	// 	file = mounted_iso;
-	// 	ret = get_device_name(devicename, sizeof(devicename), file);
-
-	// 	if (ret == 0 && 0 == strcasecmp(devicename, "ef0:")) {
-	// 		apitype = PSP_INIT_APITYPE_UMDEMU_EF1;
-	// 	}
-
-	// 	param->key = "umdemu";
-	// 	// Set umdmode
-	// 	if (config.umdmode == MODE_INFERNO) {
-	// 		sctrlSESetBootConfFileIndex(BOOT_INFERNO);
-	// 	} else if (config.umdmode == MODE_MARCH33) {
-	// 		sctrlSESetBootConfFileIndex(BOOT_MARCH33);
-	// 	} else if (config.umdmode == MODE_NP9660) {
-	// 		sctrlSESetBootConfFileIndex(BOOT_NP9660);
-	// 	}
-
-	// 	sctrlSESetBootConfFileIndex(BOOT_INFERNO);
-
-	// 	#ifdef DEBUG
-	// 	printk("Modified %s args: Executing %s(0x%04X, %s)\n", __func__, __func__, apitype, file);
-	// 	#endif
-
-	// 	ret = sctrlKernelLoadExecVSHWithApitype(apitype, file, param);
-	// } else {
-	// 	sctrlSESetBootConfFileIndex(BOOT_NORMAL);
-	// 	sctrlSESetUmdFile("");
-	// 	apitype = (strstr(param->argp, "/PBOOT.PBP")==NULL)? PSP_INIT_APITYPE_DISC:PSP_INIT_APITYPE_DISC_PBOOT;
-
-	// 	#ifdef DEBUG
-	// 	printk("Modified %s args: Executing %s(0x%04X, %s)\n", __func__, __func__, apitype, file);
-	// 	#endif
-	// 	ret = sctrlKernelLoadExecVSHWithApitype(apitype, file, param);
-	// }
-
-
-	// return ret;
-
 	#ifdef DEBUG
 	printk("Executing %s(0x%04X, %s)\n", __func__, apitype, file);
 	#endif
@@ -903,66 +851,6 @@ int LoadExecVSHCommonPatched(int apitype, char *file, struct SceKernelLoadExecVS
 
 	// ISO
 	if (is_iso_eboot(file) || is_iso_dlc(file) || is_iso_update(file)) {
-		u32 k1 = pspSdkSetK1(0);
-		int result = vpbp_loadexec(file, param);
-		pspSdkSetK1(k1);
-		return result;
-	}
-
-	int k1 = pspSdkSetK1(0);
-
-	sctrlSESetUmdFile("");
-
-	// Enable 1.50 homebrews boot
-	char *perc = strchr(param->argp, '%');
-	if (perc) {
-		strcpy(perc, perc + 1);
-		file = param->argp;
-		param->args = strlen(param->argp) + 1; //Update length
-	}
-
-	pspSdkSetK1(k1);
-
-	return sctrlKernelLoadExecVSHWithApitype(apitype, file, param);
-}
-
-int LoadExecVSHCommonPatched2(int apitype, char *file, struct SceKernelLoadExecVSHParam *param, int unk2) {
-	#ifdef DEBUG
-	printk("Executing %s(0x%04X, %s)\n", __func__, apitype, file);
-	#endif
-
-	// ISO
-	if (is_iso_eboot(file) || is_iso_manual(file) || is_iso_dlc(file) || is_iso_update(file)) {
-		u32 k1 = pspSdkSetK1(0);
-		int result = vpbp_loadexec(file, param);
-		pspSdkSetK1(k1);
-		return result;
-	}
-
-	int k1 = pspSdkSetK1(0);
-
-	sctrlSESetUmdFile("");
-
-	// Enable 1.50 homebrews boot
-	char *perc = strchr(param->argp, '%');
-	if (perc) {
-		strcpy(perc, perc + 1);
-		file = param->argp;
-		param->args = strlen(param->argp) + 1; //Update length
-	}
-
-	pspSdkSetK1(k1);
-
-	return sctrlKernelLoadExecVSHWithApitype(apitype, file, param);
-}
-
-int LoadExecVSHCommonPatched3(int apitype, char *file, struct SceKernelLoadExecVSHParam *param, int unk2) {
-	#ifdef DEBUG
-	printk("Executing %s(0x%04X, %s)\n", __func__, apitype, file);
-	#endif
-
-	// ISO
-	if (is_iso_eboot(file) || is_iso_manual(file) || is_iso_dlc(file) || is_iso_update(file)) {
 		u32 k1 = pspSdkSetK1(0);
 		int result = vpbp_loadexec(file, param);
 		pspSdkSetK1(k1);

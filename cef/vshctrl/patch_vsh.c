@@ -182,7 +182,7 @@ int sceUpdateDownloadSetVersionPatched(int version) {
 	int (* sceUpdateDownloadSetVersion)(int version) = (void *)FindProc("SceUpdateDL_Library", "sceLibUpdateDL", 0xC1AF1076);
 	int (* sceUpdateDownloadSetUrl)(const char *url) = (void *)FindProc("SceUpdateDL_Library", "sceLibUpdateDL", 0xF7E66CB4);
 
-	sceUpdateDownloadSetUrl("http://adrenaline.sarcasticat.com/psp-updatelist.txt");
+	sceUpdateDownloadSetUrl("http://adrenaline.grayjack.me/psp-updatelist.txt");
 	int res = sceUpdateDownloadSetVersion(sctrlSEGetVersion());
 
 	pspSdkSetK1(k1);
@@ -218,7 +218,7 @@ void PatchVshMain(SceModule2 *mod) {
 	u32 text_addr = mod->text_addr;
 	char* mod_name = mod->modname;
 
-	// // Allow old sfo's
+	// Allow old sfo's
 	_sw(0, text_addr + 0x122B0);
 	_sw(0, text_addr + 0x12058); //DISC_ID
 	_sw(0, text_addr + 0x12060); //DISC_ID
