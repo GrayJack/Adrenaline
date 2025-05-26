@@ -363,10 +363,43 @@ SceUID sceIoOpenPatched(const char *file, int flags, SceMode mode) {
 		pspSdkSetK1(k1);
 	} else if (is_video_path(file)) {
 		res = videoIoOpen(file, flags, mode);
-	} else {
-		if (is_iso_manual(file)) {
-			vpbp_fixisomanualpath(file);
+	} else if (is_iso_manual(file)) {
+		char patched_file[MAX_VPBP] = {0};
+		strcpy(patched_file, file);
+
+		// Attempt <ISO-name>.DAT first
+		vpbp_fixisomanualpath(patched_file);
+
+		SceIoStat stat;
+		int ret = sceIoGetstat(patched_file, &stat);
+
+		// <ISO-name>.DAT exist
+		if (ret == 0) {
+			res = sceIoOpen(patched_file, flags, mode);
+		} else {
+			// Attempt `/PSP/<GAMEID>/DOCUMENT.DAT`
+			vpbp_fixisopath(file);
+			res = sceIoOpen(file, flags, mode);
 		}
+	} else if (is_iso_docinfo(file)) {
+		char patched_file[MAX_VPBP] = {0};
+		strcpy(patched_file, file);
+
+		// Attempt <ISO-name>.EDAT first
+		vpbp_fixisodocinfopath(patched_file);
+
+		SceIoStat stat;
+		int ret = sceIoGetstat(patched_file, &stat);
+
+		// <ISO-name>.EDAT exist
+		if (ret == 0) {
+			res = sceIoOpen(patched_file, flags, mode);
+		} else {
+			// Attempt `/PSP/<GAMEID>/DOCINFO.EDAT`
+			vpbp_fixisopath(file);
+			res = sceIoOpen(file, flags, mode);
+		}
+	} else {
 		if (is_iso_update(file) || is_iso_dlc(file)) {
 			vpbp_fixisopath(file);
 		}
@@ -470,11 +503,34 @@ int sceIoGetstatPatched(const char *file, SceIoStat *stat) {
 	} else if (is_video_path(file)) {
 		res = videoIoGetstat(file, stat);
 	} else if (is_iso_docinfo(file)) {
-		res = 0x80010002;
-	} else {
-		if (is_iso_manual(file)) {
-			vpbp_fixisomanualpath(file);
+		char patched_file[MAX_VPBP] = {0};
+		strcpy(patched_file, file);
+
+		// Attempt <ISO-name>.EDAT first
+		vpbp_fixisodocinfopath(patched_file);
+		res = sceIoGetstat(patched_file, stat);
+
+		// <ISO-name>.EDAT don't exist
+		if (res != 0) {
+			// Attempt `/PSP/<GAMEID>/DOCINFO.EDAT`
+			vpbp_fixisopath(file);
+			res = sceIoGetstat(file, stat);
 		}
+	} else if (is_iso_manual(file)) {
+		char patched_file[MAX_VPBP] = {0};
+		strcpy(patched_file, file);
+
+		// Attempt <ISO-name>.DAT first
+		vpbp_fixisomanualpath(patched_file);
+		res = sceIoGetstat(patched_file, stat);
+
+		// <ISO-name>.DAT don't exist
+		if (res != 0) {
+			// Attempt `/PSP/<GAMEID>/DOCUMENT.DAT`
+			vpbp_fixisopath(file);
+			res = sceIoGetstat(file, stat);
+		}
+	} else {
 		if (is_iso_update(file) || is_iso_dlc(file)){
 			vpbp_fixisopath(file);
 		}

@@ -953,6 +953,20 @@ void vpbp_fixisomanualpath(char* path) {
 	}
 }
 
+void vpbp_fixisodocinfopath(char* path) {
+	VirtualPBP* vpbp = get_vpbp_by_path(path);
+	if (vpbp == NULL) return;
+
+	if (strcmp(strrchr(path,'/')+1, "DOCINFO.EDAT") == 0) {
+		sprintf(path, "%sT", vpbp->name);
+		int len = strlen(path);
+		((char*)path)[len-4] = 'E';
+		((char*)path)[len-3] = 'D';
+		((char*)path)[len-2] = 'A';
+		((char*)path)[len-1] = 'T';
+	}
+}
+
 void vpbp_fixisopath(char* path) {
 	char game_id[10];
 	VirtualPBP* vpbp = get_vpbp_by_path(path);
