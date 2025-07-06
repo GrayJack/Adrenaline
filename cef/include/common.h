@@ -120,17 +120,21 @@
 	_sw(0x24020001, a + 4);\
 } while (0)
 
+#define MAKE_JUMP_PATCH(a, f) _sw(0x08000000 | (((u32)(f) & 0x0FFFFFFC) >> 2), a);
+#define PTR_ALIGN_64(p) ((void*)((((u32)p)+64-1)&(~(64-1))))
+
 //by Davee
 #define HIJACK_FUNCTION(a, f, ptr) \
 { \
-	u32 _func_ = a; \
-	static u32 patch_buffer[3]; \
-	_sw(_lw(_func_), (u32)patch_buffer); \
-	_sw(_lw(_func_ + 4), (u32)patch_buffer + 8);\
-	MAKE_JUMP((u32)patch_buffer + 4, _func_ + 8); \
-	_sw(0x08000000 | (((u32)(f) >> 2) & 0x03FFFFFF), _func_); \
-	_sw(0, _func_ + 4); \
-	ptr = (void *)patch_buffer; \
+	static u32 _pb_[5]; \
+	_sw(_lw((u32)(a)), (u32)_pb_); \
+	_sw(_lw((u32)(a) + 4), (u32)_pb_ + 4);\
+	_sw(NOP, (u32)_pb_ + 8);\
+	_sw(NOP, (u32)_pb_ + 16);\
+	MAKE_JUMP_PATCH((u32)_pb_ + 12, (u32)(a) + 8); \
+	_sw(0x08000000 | (((u32)(f) >> 2) & 0x03FFFFFF), (u32)(a)); \
+	_sw(0, (u32)(a) + 4); \
+	ptr = (void *)_pb_; \
 }
 
 #define K_HIJACK_CALL(a, f, ptr) \
