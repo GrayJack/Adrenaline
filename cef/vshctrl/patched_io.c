@@ -9,12 +9,12 @@
 #include <pspctrl.h>
 #include <common.h>
 
+#include <adrenaline_log.h>
+
 #include "dirent_track.h"
 #include "virtual_pbp.h"
 #include "virtual_mp4.h"
 #include "patched_io.h"
-
-#include "printk.h"
 
 #define MAGIC_DFD_FOR_DELETE 0x9000
 #define MAGIC_DFD_FOR_DELETE_2 0x9001
@@ -240,7 +240,7 @@ SceUID sceIoDopenPatched(const char *dirname) {
 
 		if (ret < 0) {
 			#if defined(DEBUG) && DEBUG >= 2
-			printk("%s: dirent_add -> %d\n", __func__, ret);
+			log("%s: dirent_add -> %d\n", __func__, ret);
 			#endif
 			return -1;
 		}
@@ -248,7 +248,7 @@ SceUID sceIoDopenPatched(const char *dirname) {
 
 exit:
 	#if defined(DEBUG) && DEBUG >= 2
-	printk("%s: %s -> 0x%08X\n", __func__, dirname, res);
+	log("%s: %s -> 0x%08X\n", __func__, dirname, res);
 	#endif
 	return res;
 }
@@ -306,7 +306,7 @@ int sceIoDreadPatched(SceUID fd, SceIoDirent *dir) {
 
 exit:
 	#if defined(DEBUG) && DEBUG >= 2
-	printk("%s: 0x%08X %s -> 0x%08X\n", __func__, fd, dir->d_name, res);
+	log("%s: 0x%08X %s -> 0x%08X\n", __func__, fd, dir->d_name, res);
 	#endif
 	return res;
 }
@@ -349,7 +349,7 @@ int sceIoDclosePatched(SceUID fd) {
 
 exit:
 	#if defined(DEBUG) && DEBUG >= 2
-	printk("%s: 0x%08X -> 0x%08X\n", __func__, fd, res);
+	log("%s: 0x%08X -> 0x%08X\n", __func__, fd, res);
 	#endif
 	return res;
 }
@@ -407,7 +407,7 @@ SceUID sceIoOpenPatched(const char *file, int flags, SceMode mode) {
 	}
 
 	#if defined(DEBUG) && DEBUG >= 3
-	printk("%s: %s -> 0x%08X\n", __func__, file, res);
+	log("%s: %s -> 0x%08X\n", __func__, file, res);
 	#endif
 
 	return res;
@@ -427,7 +427,7 @@ int sceIoReadPatched(SceUID fd, void *data, SceSize size) {
 	}
 
 	#if defined(DEBUG) && DEBUG >= 3
-	printk("%s: 0x%08X -> 0x%08X\n", __func__, fd, res);
+	log("%s: 0x%08X -> 0x%08X\n", __func__, fd, res);
 	#endif
 
 	return res;
@@ -447,7 +447,7 @@ int sceIoClosePatched(SceUID fd) {
 	}
 
 	#if defined(DEBUG) && DEBUG >= 3
-	printk("%s: 0x%08X -> 0x%08X\n", __func__, fd, res);
+	log("%s: 0x%08X -> 0x%08X\n", __func__, fd, res);
 	#endif
 
 	return res;
@@ -467,7 +467,7 @@ SceOff sceIoLseekPatched(SceUID fd, SceOff offset, int whence) {
 	}
 
 	#if defined(DEBUG) && DEBUG >= 3
-	printk("%s: 0x%08X -> 0x%08X\n", __func__, fd, res);
+	log("%s: 0x%08X -> 0x%08X\n", __func__, fd, res);
 	#endif
 
 	return res;
@@ -487,7 +487,7 @@ int sceIoLseek32Patched(SceUID fd, int offset, int whence) {
 	}
 
 	#if defined(DEBUG) && DEBUG >= 3
-	printk("%s: 0x%08X -> 0x%08X\n", __func__, fd, res);
+	log("%s: 0x%08X -> 0x%08X\n", __func__, fd, res);
 	#endif
 
 	return res;
@@ -538,7 +538,7 @@ int sceIoGetstatPatched(const char *file, SceIoStat *stat) {
 	}
 
 	#if defined(DEBUG) && DEBUG >= 3
-	printk("%s: %s -> 0x%08X\n", __func__, file, res);
+	log("%s: %s -> 0x%08X\n", __func__, file, res);
 	#endif
 
 	return res;
@@ -549,7 +549,7 @@ int sceIoRemovePatched(const char *file) {
 	if (is_video_path(file)) {
 		res = videoIoRemove(file);
 		#if defined(DEBUG) && DEBUG >= 2
-		printk("%s:<virtual-mp4> %s -> 0x%08X\n", __func__, file, res);
+		log("%s:<virtual-mp4> %s -> 0x%08X\n", __func__, file, res);
 		#endif
 		return res;
 	}
@@ -557,14 +557,14 @@ int sceIoRemovePatched(const char *file) {
 	if (g_temp_delete_dir[0] != '\0' && strncmp(file, g_temp_delete_dir, strlen(g_temp_delete_dir)) == 0) {
 		res = 0;
 		#if defined(DEBUG) && DEBUG >= 2
-		printk("%s:<virtual> %s -> 0x%08X\n", __func__, file, res);
+		log("%s:<virtual> %s -> 0x%08X\n", __func__, file, res);
 		#endif
 		return res;
 	}
 
 	res = sceIoRemove(file);
 	#if defined(DEBUG) && DEBUG >= 2
-	printk("%s: %s -> 0x%08X\n", __func__, file, res);
+	log("%s: %s -> 0x%08X\n", __func__, file, res);
 	#endif
 	return res;
 }
@@ -579,7 +579,7 @@ int sceIoRmdirPatched(const char *path) {
 		res = vpbp_remove(g_iso_dir);
 		pspSdkSetK1(k1);
 		#if defined(DEBUG) && DEBUG >= 2
-		printk("%s:<virtual> %s -> 0x%08X\n", __func__, path, res);
+		log("%s:<virtual> %s -> 0x%08X\n", __func__, path, res);
 		#endif
 		g_iso_dir[0] = '\0';
 		g_temp_delete_dir[0] = '\0';
@@ -589,7 +589,7 @@ int sceIoRmdirPatched(const char *path) {
 
 	res = sceIoRmdir(path);
 	#if defined(DEBUG) && DEBUG >= 2
-	printk("%s: %s 0x%08X\n", __func__, path, res);
+	log("%s: %s 0x%08X\n", __func__, path, res);
 	#endif
 	return res;
 }
@@ -616,7 +616,7 @@ int sceIoRenamePatched(const char *oldname, const char *newname) {
 		g_iso_dir[sizeof(g_iso_dir)-1] = '\0';
 		strncpy(g_temp_delete_dir, newname, sizeof(g_temp_delete_dir));
 		#if defined(DEBUG) && DEBUG >= 2
-		printk("%s:<virtual> %s %s -> 0x%08X\n", __func__, oldname, newname, res);
+		log("%s:<virtual> %s %s -> 0x%08X\n", __func__, oldname, newname, res);
 		#endif
 		return 0;
 	}
@@ -624,14 +624,14 @@ int sceIoRenamePatched(const char *oldname, const char *newname) {
 	if(g_temp_delete_dir[0] != '\0' && strncmp(oldname, g_temp_delete_dir, strlen(g_temp_delete_dir)) == 0) {
 		res = 0;
 		#if defined(DEBUG) && DEBUG >= 2
-		printk("%s:<virtual2> %s %s -> 0x%08X\n", __func__, oldname, newname, res);
+		log("%s:<virtual2> %s %s -> 0x%08X\n", __func__, oldname, newname, res);
 		#endif
 		return res;
 	}
 
 	res = sceIoRename(oldname, newname);
 	#if defined(DEBUG) && DEBUG >= 2
-	printk("%s: %s %s -> 0x%08X\n", __func__, oldname, newname, res);
+	log("%s: %s %s -> 0x%08X\n", __func__, oldname, newname, res);
 	#endif
 	return res;
 }
@@ -641,21 +641,21 @@ int sceIoChstatPatched(const char *file, SceIoStat *stat, int bits) {
 	if(g_temp_delete_dir[0] != '\0' && strncmp(file, g_temp_delete_dir, strlen(g_temp_delete_dir)) == 0) {
 		res = 0;
 		#if defined(DEBUG) && DEBUG >= 2
-		printk("%s:<virtual> %s -> 0x%08X\n", __func__, file, res);
+		log("%s:<virtual> %s -> 0x%08X\n", __func__, file, res);
 		#endif
 		return res;
 	}
 
 	res = sceIoChstat(file, stat, bits);
 	#if defined(DEBUG) && DEBUG >= 3
-	printk("%s: %s -> 0x%08X\n", __func__, file, res);
+	log("%s: %s -> 0x%08X\n", __func__, file, res);
 	#endif
 	return res;
 }
 
 int homebrewloadexec(char * file, struct SceKernelLoadExecVSHParam * param) {
 	#ifdef DEBUG
-	printk("Executing %s\n", __func__);
+	log("Executing %s\n", __func__);
 	#endif
 	sctrlSESetBootConfFileIndex(BOOT_NORMAL);
 	sctrlSESetUmdFile("");
@@ -672,7 +672,7 @@ int homebrewloadexec(char * file, struct SceKernelLoadExecVSHParam * param) {
 
 int umdemuloadexec(char * file, struct SceKernelLoadExecVSHParam * param) {
 	#ifdef DEBUG
-	printk("Executing %s\n", __func__);
+	log("Executing %s\n", __func__);
 	#endif
 
 	//result
@@ -704,7 +704,7 @@ int umdemuloadexec(char * file, struct SceKernelLoadExecVSHParam * param) {
 
 int umdLoadExec(char * file, struct SceKernelLoadExecVSHParam * param) {
 	#ifdef DEBUG
-	printk("Executing %s\n", __func__);
+	log("Executing %s\n", __func__);
 	#endif
 
 	//result
@@ -750,7 +750,7 @@ int umdLoadExec(char * file, struct SceKernelLoadExecVSHParam * param) {
 
 int umdLoadExecUpdater(char * file, struct SceKernelLoadExecVSHParam * param) {
 	#ifdef DEBUG
-	printk("Executing %s\n", __func__);
+	log("Executing %s\n", __func__);
 	#endif
 
 	//result
@@ -763,7 +763,7 @@ int umdLoadExecUpdater(char * file, struct SceKernelLoadExecVSHParam * param) {
 
 int homebrewLoadExec(int apitype, char *file, struct SceKernelLoadExecVSHParam *param, int unk2) {
 	#ifdef DEBUG
-	printk("Executing %s(0x%04X, %s)\n", __func__, apitype, file);
+	log("Executing %s(0x%04X, %s)\n", __func__, apitype, file);
 	#endif
 
 	sctrlSESetBootConfFileIndex(BOOT_NORMAL);
@@ -781,7 +781,7 @@ int homebrewLoadExec(int apitype, char *file, struct SceKernelLoadExecVSHParam *
 
 int umdemuLoadExec(int apitype, char *file, struct SceKernelLoadExecVSHParam *param, int unk2) {
 	#ifdef DEBUG
-	printk("Executing %s(0x%04X, %s)\n", __func__, apitype, file);
+	log("Executing %s(0x%04X, %s)\n", __func__, apitype, file);
 	#endif
 
 	//result
@@ -808,7 +808,7 @@ int umdemuLoadExec(int apitype, char *file, struct SceKernelLoadExecVSHParam *pa
 		[ (strstr(param->argp, "/PBOOT.PBP") == NULL)? 0:1 ];
 
 	#ifdef DEBUG
-	printk("Modified %s args: Executing %s(0x%04X, %s)\n", __func__, __func__, apitype, file);
+	log("Modified %s args: Executing %s(0x%04X, %s)\n", __func__, __func__, apitype, file);
 	#endif
 	//forward
 	return sctrlKernelLoadExecVSHWithApitype(apitype, file, param);
@@ -816,7 +816,7 @@ int umdemuLoadExec(int apitype, char *file, struct SceKernelLoadExecVSHParam *pa
 
 int umdLoadExec2(int apitype, char *file, struct SceKernelLoadExecVSHParam *param, int unk2) {
 	#ifdef DEBUG
-	printk("Executing %s(0x%04X, %s)\n", __func__, apitype, file);
+	log("Executing %s(0x%04X, %s)\n", __func__, apitype, file);
 	#endif
 
 	// ISO
@@ -846,7 +846,7 @@ int umdLoadExec2(int apitype, char *file, struct SceKernelLoadExecVSHParam *para
 
 int LoadExecVSHCommonPatched(int apitype, char *file, struct SceKernelLoadExecVSHParam *param, int unk2) {
 	#ifdef DEBUG
-	printk("Executing %s(0x%04X, %s)\n", __func__, apitype, file);
+	log("Executing %s(0x%04X, %s)\n", __func__, apitype, file);
 	#endif
 
 	// ISO

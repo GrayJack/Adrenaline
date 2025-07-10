@@ -24,7 +24,7 @@
 #include <systemctrl_se.h>
 #include <vshctrl.h>
 
-#include "printk.h"
+#include <adrenaline_log.h>
 
 
 #define MAX_RETRIES 8
@@ -178,7 +178,7 @@ static int read_raw_data(void* addr, u32 size, u32 offset) {
 			break;
 		} else {
 			#ifdef DEBUG
-			printk("%s: sceIoLseek -> 0x%08X\n", __func__, (int)ofs);
+			log("%s: sceIoLseek -> 0x%08X\n", __func__, (int)ofs);
 			#endif
 			reOpen();
 		}
@@ -193,7 +193,7 @@ static int read_raw_data(void* addr, u32 size, u32 offset) {
 			break;
 		} else {
 			#ifdef DEBUG
-			printk("%s: sceIoRead -> 0x%08X\n", __func__, ret);
+			log("%s: sceIoRead -> 0x%08X\n", __func__, ret);
 			#endif
 			reOpen();
 			sceIoLseek(g_isofd, offset, PSP_SEEK_SET);
@@ -390,7 +390,7 @@ static int findFile(const char * file, u32 lba, u32 dir_size, u32 is_dir, Iso966
 
 		#ifdef DEBUG
 		if (rec->len_dr < rec->len_fi + sizeof(*rec)) {
-			printk("%s: Corrupted directory record found in %s, LBA %d\n", __func__, g_filename, (int)lba);
+			log("%s: Corrupted directory record found in %s, LBA %d\n", __func__, g_filename, (int)lba);
 		}
 		#endif
 
@@ -513,7 +513,7 @@ int isoOpen(const char *path) {
 
 	if (g_filename == NULL || reOpen() < 0) {
 		#ifdef DEBUG
-		printk("%s: open failed %s -> 0x%08X\n", __func__, g_filename, g_isofd);
+		log("%s: open failed %s -> 0x%08X\n", __func__, g_filename, g_isofd);
 		#endif
 		ret = -2;
 		goto error;
@@ -584,7 +584,7 @@ int isoOpen(const char *path) {
 
 	if (memcmp(&g_sector_buffer[1], ISO_STANDARD_ID, sizeof(ISO_STANDARD_ID)-1)) {
 		#ifdef DEBUG
-		printk("%s: vol descriptor not found\n", __func__);
+		log("%s: vol descriptor not found\n", __func__);
 		#endif
 		ret = -10;
 

@@ -24,7 +24,9 @@
 #include <pspsysmem_kernel.h>
 #include <systemctrl.h>
 #include <systemctrl_se.h>
-#include "printk.h"
+
+#define _ADRENALINE_LOG_IMPL_
+#include <adrenaline_log.h>
 
 
 PSP_MODULE_INFO("VshControl", 0x1007, 1, 1);
@@ -58,8 +60,8 @@ SceUID modid = -1;
 int initPatch();
 
 int module_start(SceSize args, void *argp) {
-	printkInit("ms0:/log_vshctrl.txt");
-	printk("VshCtrl started\n");
+	logInit("ms0:/log_vshctrl.txt");
+	log("VshCtrl started\n");
 
 	psp_model = sceKernelGetModel();
 	sctrlSEGetConfig(&config);
@@ -78,7 +80,7 @@ int module_start(SceSize args, void *argp) {
 	sctrlSESetUmdFile("");
 	sctrlSESetBootConfFileIndex(BOOT_NORMAL);
 
-	printkSync();
+	logSync();
 
 	return 0;
 }

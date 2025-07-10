@@ -13,7 +13,6 @@
 
 #include "virtual_pbp.h"
 #include "patched_io.h"
-#include "printk.h"
 
 extern AdrenalineConfig config;
 extern u32 psp_model;
