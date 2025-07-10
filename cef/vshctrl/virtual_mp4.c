@@ -262,18 +262,18 @@ static void readIconFromISO(const char* isopath) {
 		return;
 	}
 
-	u8* data = vsh_malloc(size);
+	u8* data = user_malloc(size);
 
 	res = isoRead(data, lba, 0, size);
 	isoClose();
 
 	if (res<0){
-		vsh_free(data);
+		user_free(data);
 		return;
 	}
 
 	if (icon_data){
-		vsh_free(icon_data);
+		user_free(icon_data);
 	}
 
 	icon_data = data;
@@ -470,7 +470,7 @@ int videoIoClose(SceUID fd) {
 
 	// free icon data
 	if (icon_data) {
-		vsh_free(icon_data);
+		user_free(icon_data);
 		icon_data = 0;
 		icon_size = 0;
 	}
