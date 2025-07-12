@@ -175,6 +175,11 @@ void sctrlSESetDiscType(int type);
 int sctrlSEGetDiscType(void);
 
 /**
+ * Get the boot config index
+ */
+int sctrlSEGetBootConfFileIndex(void);
+
+/**
  * Sets the boot config file for next reboot
  *
  * @param index - The index identifying the file (0 -> normal bootconf, 1 -> inferno driver bootconf, 2 -> march33 driver bootconf, 3 -> np9660 bootcnf, 4 -> recovery bootconf)
@@ -196,13 +201,6 @@ char *GetUmdFile();
 */
 void sctrlSESetUmdFile(char *file);
 void SetUmdFile(char *file);
-
-/**
- * Sets the boot config file for next reboot (kernel only)
- *
- * @param index - The index identifying the file (0 -> normal bootconf, 1 -> march33 driver bootconf, 2 -> np9660 bootcnf)
-*/
-void sctrlSESetBootConfFileIndex(int index);
 
 /**
  * Immediately sets the SE configuration in memory without saving to flash.

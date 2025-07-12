@@ -54,6 +54,7 @@ int sctrlHENGetVersion() {
 }
 
 // Same NID as `sctrlHENGetMinorVersion` on ARK-4
+void sctrlHENGetMinorVersion(char *file) __attribute__((alias("sctrlHENGetRevisionVersion")));
 int sctrlHENGetRevisionVersion() {
 	return ADRENALINE_VERSION_REV;
 }
