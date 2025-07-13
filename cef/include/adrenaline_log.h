@@ -50,7 +50,7 @@
 int logInit(const char* filename);
 
 // Log info
-int log(char *fmt, ...)__attribute__((format (printf, 1, 2)));
+int logmsg(char *fmt, ...)__attribute__((format (printf, 1, 2)));
 
 // Output all info remaining in the memory to file
 int logSync(void);
@@ -432,7 +432,7 @@ int logCached(char *fmt, ...) {
 	return printed_len;
 }
 
-int log(char *fmt, ...) {
+int logmsg(char *fmt, ...) {
 	va_list args;
 	int printed_len;
 	u32 k1;
@@ -548,7 +548,7 @@ int logSync(void) {
 
 #else
 int logCached(char *fmt, ...){return 0;}
-int log(char *fmt, ...){return 0;}
+int logmsg(char *fmt, ...){return 0;}
 int logInit(const char *output){return 0;}
 int logSync(void){return 0;}
 #endif // DEBUG

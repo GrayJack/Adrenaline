@@ -61,7 +61,7 @@ int initPatch();
 
 int module_start(SceSize args, void *argp) {
 	logInit("ms0:/log_vshctrl.txt");
-	log("VshCtrl started\n");
+	logmsg("VshCtrl started\n");
 
 	psp_model = sceKernelGetModel();
 	sctrlSEGetConfig(&config);
