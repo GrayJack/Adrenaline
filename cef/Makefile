@@ -107,11 +107,16 @@ _inferno: | _libs
 	make -C inferno clean
 
 _vshctrl: | _libs
-	make -C vshctrl clean
-	make -C vshctrl
-	psp-packer vshctrl/vshctrl.prx
-	cp "vshctrl/vshctrl.prx" "../user/flash0/kd/vshctrl.prx"
-	make -C vshctrl clean
+# 	make -C vshctrl clean
+# 	make -C vshctrl
+# 	psp-packer vshctrl/vshctrl.prx
+# 	cp "vshctrl/vshctrl.prx" "../user/flash0/kd/vshctrl.prx"
+# 	make -C vshctrl clean
+	make -C vshctrl_new clean
+	make -C vshctrl_new
+	psp-packer vshctrl_new/vshctrl.prx
+	cp "vshctrl_new/vshctrl.prx" "../user/flash0/kd/vshctrl.prx"
+	make -C vshctrl_new clean
 
 _kermit_idstorage: | _libs
 	make -C kermit_idstorage clean
